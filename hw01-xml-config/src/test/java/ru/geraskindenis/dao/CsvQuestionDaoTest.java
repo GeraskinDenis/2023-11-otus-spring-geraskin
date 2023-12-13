@@ -17,8 +17,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class CsvQuestionDaoTest {
-    TestFileNameProvider testFileNameProvider;
-    QuestionDao questionDao;
+    private TestFileNameProvider testFileNameProvider;
+    private QuestionDao questionDao;
 
     @BeforeEach
     void beforeEach() {
