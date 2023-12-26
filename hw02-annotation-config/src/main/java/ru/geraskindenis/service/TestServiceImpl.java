@@ -21,17 +21,11 @@ public class TestServiceImpl implements TestService {
     private final QuestionDao questionDao;
     @Autowired
     private final IOService streamIoService;
-    @Autowired
-    private final StudentService studentService;
-    @Autowired
-    private final ResultService resultService;
 
     @Override
-    public void executeTest() {
-        Student student = studentService.determineCurrentStudent();
+    public TestResult executeTestFor(Student student) {
         List<Question> questions = questionDao.findAll();
-        TestResult testResult = testingProcess(student, questions);
-        resultService.showResult(testResult);
+        return testingProcess(student, questions);
     }
 
     private TestResult testingProcess(Student student, List<Question> questions) {

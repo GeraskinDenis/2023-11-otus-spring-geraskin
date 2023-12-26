@@ -1,5 +1,8 @@
 package ru.geraskindenis.service;
 
+import ru.geraskindenis.domain.Student;
+import ru.geraskindenis.domain.TestResult;
+
 public interface TestService {
-    void executeTest();
+    TestResult executeTestFor(Student student);
 }
