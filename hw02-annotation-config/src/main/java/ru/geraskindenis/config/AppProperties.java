@@ -1,17 +1,23 @@
 package ru.geraskindenis.config;
 
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 @Component
+@Setter
 @PropertySource("classpath:application.properties")
-public class AppProperties implements TestFileNameProvider {
+public class AppProperties implements TestConfig, TestFileNameProvider {
 
-    private final String testFileName;
+    @Value("${test.rightAnswersCountToPass}")
+    private int rightAnswersCountToPass;
+    @Value("${test.fileName}")
+    private String testFileName;
 
-    public AppProperties(@Value("${test.fileName}") String testFileName) {
-        this.testFileName = testFileName;
+    @Override
+    public int getRightAnswersCountToPass() {
+        return rightAnswersCountToPass;
     }
 
     @Override
