@@ -9,17 +9,19 @@ import java.util.Scanner;
 
 @Service
 public class StreamsIOService implements IOService {
-    private static final int MAX_ATTEMPTS = 10;
+    private final int maxAttempts;
 
     private final PrintStream printStream;
 
     private final Scanner scanner;
 
     public StreamsIOService(@Value("#{T(System).out}") PrintStream printStream,
-                            @Value("#{T(System).in}") InputStream inputStream) {
+                            @Value("#{T(System).in}") InputStream inputStream,
+                            @Value("${test.maxAttempts}") int maxAttempts) {
 
         this.printStream = printStream;
         this.scanner = new Scanner(inputStream);
+        this.maxAttempts = maxAttempts;
     }
 
     @Override
@@ -45,7 +47,7 @@ public class StreamsIOService implements IOService {
 
     @Override
     public int readIntForRange(int min, int max, String errorMessage) {
-        for (int i = 0; i < MAX_ATTEMPTS; i++) {
+        for (int i = 0; i < maxAttempts; i++) {
             try {
                 var stringValue = scanner.nextLine();
                 int intValue = Integer.parseInt(stringValue);

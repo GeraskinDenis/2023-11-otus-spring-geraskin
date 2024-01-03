@@ -1,18 +1,16 @@
 package ru.geraskindenis.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.geraskindenis.config.TestConfig;
 import ru.geraskindenis.domain.TestResult;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class ResultServiceImpl implements ResultService {
 
-    @Autowired
     private final TestConfig testConfig;
-    @Autowired
+
     private final IOService ioService;
 
     @Override

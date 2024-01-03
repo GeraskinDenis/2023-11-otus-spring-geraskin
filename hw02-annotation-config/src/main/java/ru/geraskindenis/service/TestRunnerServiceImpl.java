@@ -1,18 +1,16 @@
 package ru.geraskindenis.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class TestRunnerServiceImpl implements TestRunnerService {
 
-    @Autowired
     private final TestService testService;
-    @Autowired
+
     private final StudentService studentService;
-    @Autowired
+
     private final ResultService resultService;
 
     @Override

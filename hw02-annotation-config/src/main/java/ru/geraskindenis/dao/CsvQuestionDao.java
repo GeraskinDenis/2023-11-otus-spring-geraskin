@@ -9,6 +9,7 @@ import ru.geraskindenis.domain.Question;
 import ru.geraskindenis.exceptions.QuestionReadException;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Objects;
@@ -25,7 +26,9 @@ public class CsvQuestionDao implements QuestionDao {
 
         String csvFileName = fileNameProvider.getTestFileName();
         List<Question> questions;
-        try (InputStreamReader reader = new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(csvFileName)))) {
+        try (InputStream inputStream = Objects.requireNonNull(getClass()
+                .getClassLoader().getResourceAsStream(csvFileName));
+             InputStreamReader reader = new InputStreamReader(inputStream)) {
             questions = new CsvToBeanBuilder<>(reader).withType(QuestionDto.class)
                     .withSkipLines(1).withSeparator(';').build().stream().map((e) -> ((QuestionDto) e).toDomainObject())
                     .collect(Collectors.toList());
