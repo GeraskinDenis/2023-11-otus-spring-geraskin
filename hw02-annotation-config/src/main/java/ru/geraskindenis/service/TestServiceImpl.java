@@ -25,10 +25,10 @@ public class TestServiceImpl implements TestService {
         List<Question> questions = questionDao.findAll();
         Map<Question, Answer> testResult = new HashMap<>();
         int rightAnswersCount = 0;
-        streamIoService.printLine("/nPlease, answer the questions bellow:");
+        streamIoService.printLine("\nPlease, answer the questions bellow:");
         for (Question q : questions) {
             int numberOfRightAnswer = 0;
-            streamIoService.printLine(q.text());
+            streamIoService.printLine("\n" + q.text());
             List<Answer> answers = q.answers();
             for (int i = 0; i < answers.size(); i++) {
                 Answer answer = answers.get(i);
