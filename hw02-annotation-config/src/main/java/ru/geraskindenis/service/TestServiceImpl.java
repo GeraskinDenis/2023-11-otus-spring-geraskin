@@ -8,9 +8,7 @@ import ru.geraskindenis.domain.Question;
 import ru.geraskindenis.domain.Student;
 import ru.geraskindenis.domain.TestResult;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -18,32 +16,35 @@ public class TestServiceImpl implements TestService {
 
     private final QuestionDao questionDao;
 
-    private final IOService streamIoService;
+    private final IOService ioService;
 
     @Override
     public TestResult executeTestFor(Student student) {
+        ioService.printLine("");
+        ioService.printFormattedLine("Please answer the questions below%n");
         List<Question> questions = questionDao.findAll();
-        Map<Question, Answer> testResult = new HashMap<>();
-        int rightAnswersCount = 0;
-        streamIoService.printLine("\nPlease, answer the questions bellow:");
-        for (Question q : questions) {
-            int numberOfRightAnswer = 0;
-            streamIoService.printLine("\n" + q.text());
-            List<Answer> answers = q.answers();
-            for (int i = 0; i < answers.size(); i++) {
-                Answer answer = answers.get(i);
-                if (answer.isCorrect()) {
-                    numberOfRightAnswer = i + 1;
-                }
-                streamIoService.printFormattedLine("%d. %s", i + 1, answer.text());
-            }
-            int numberOfAnswer = streamIoService.readIntForRangeWithPrompt(1, answers.size(),
-                    String.format("Enter answer number (1 - %d):", answers.size()), "Error message");
-            if (numberOfAnswer == numberOfRightAnswer) {
-                rightAnswersCount++;
-            }
-            testResult.put(q, answers.get(numberOfAnswer - 1));
+        TestResult testResult = new TestResult(student);
+
+        for (Question question : questions) {
+            printQuestion(question);
+            Answer answer = askQuestion(question);
+            testResult.applyAnswer(question, answer.isCorrect());
         }
-        return new TestResult(student, testResult, rightAnswersCount);
+        return testResult;
     }
+
+    private void printQuestion(Question question) {
+        ioService.printLine("\n" + question.text());
+        List<Answer> answers = question.answers();
+        for (int i = 0; i < answers.size(); i++) {
+            ioService.printFormattedLine("%d. %s", i + 1, answers.get(i).text());
+        }
+    }
+
+    private Answer askQuestion(Question question) {
+        List<Answer> answers = question.answers();
+        int numberOfAnswer = ioService.readIntForRange(1, answers.size(), "Error message");
+        return answers.get(numberOfAnswer - 1);
+    }
+
 }

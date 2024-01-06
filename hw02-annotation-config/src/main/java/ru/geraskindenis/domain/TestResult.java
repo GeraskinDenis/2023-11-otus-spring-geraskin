@@ -1,17 +1,27 @@
 package ru.geraskindenis.domain;
 
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
-@RequiredArgsConstructor
 @Data
 public class TestResult {
-
     private final Student student;
 
-    private final Map<Question, Answer> testResult;
-    
-    private final int rightAnswersCount;
+    private final List<Question> answeredQuestions;
+
+    private int rightAnswersCount;
+
+    public TestResult(Student student) {
+        this.student = student;
+        this.answeredQuestions = new ArrayList<>();
+    }
+
+    public void applyAnswer(Question question, boolean isRightAnswer) {
+        answeredQuestions.add(question);
+        if (isRightAnswer) {
+            rightAnswersCount++;
+        }
+    }
 }
