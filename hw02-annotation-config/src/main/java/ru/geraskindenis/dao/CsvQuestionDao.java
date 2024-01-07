@@ -25,16 +25,15 @@ public class CsvQuestionDao implements QuestionDao {
     public List<Question> findAll() {
 
         String csvFileName = fileNameProvider.getTestFileName();
-        List<Question> questions;
         try (InputStream inputStream = Objects.requireNonNull(getClass()
                 .getClassLoader().getResourceAsStream(csvFileName));
              InputStreamReader reader = new InputStreamReader(inputStream)) {
-            questions = new CsvToBeanBuilder<>(reader).withType(QuestionDto.class)
+
+            return new CsvToBeanBuilder<>(reader).withType(QuestionDto.class)
                     .withSkipLines(1).withSeparator(';').build().stream().map((e) -> ((QuestionDto) e).toDomainObject())
                     .collect(Collectors.toList());
         } catch (IOException | RuntimeException e) {
             throw new QuestionReadException(String.format("Error reading file '%s'.", csvFileName), e);
         }
-        return questions;
     }
 }
